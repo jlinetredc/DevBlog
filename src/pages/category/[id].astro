@@ -1,0 +1,60 @@
+---
+// src/pages/category/[id].astro
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { CATEGORIES, getCategoryLabel } from '../../lib/categories';
+
+// 1. Hàm tạo đường dẫn động cho tất cả category hiện có
+export async function getStaticPaths() {
+    const categoryList = Object.values(CATEGORIES);
+    
+    return categoryList.map(cat => ({
+        params: { id: cat.id },
+        props: { category: cat },
+    }));
+}
+
+// 2. Lấy thông tin từ params và props
+const { id } = Astro.params;
+const { category } = Astro.props;
+
+// 3. Lấy toàn bộ bài viết và lọc theo category hiện tại
+const allPosts = await getCollection('blog');
+const filteredPosts = allPosts
+    .filter(post => post.data.category === id)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const displayLabel = getCategoryLabel(id);
+---
+
+<Layout title={`Chủ đề: ${displayLabel}`}>
+    <header class="py-12 border-b border-slate-100 mb-12">
+        <a href="/" class="text-sm text-slate-400 hover:text-orange-600 transition-colors mb-4 inline-block">
+            ← Tất cả bài viết
+        </a>
+        <div class="flex items-center gap-4">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                Chủ đề: <span class="text-orange-600">{displayLabel}</span>
+            </h1>
+            <span class="px-3 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded-full mt-2">
+                {filteredPosts.length} bài viết
+            </span>
+        </div>
+        <p class="text-slate-500 mt-4 text-lg max-w-2xl">
+            Tổng hợp các bài viết chia sẻ kiến thức và kinh nghiệm về {displayLabel}.
+        </p>
+    </header>
+
+    {filteredPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredPosts.map(post => (
+                <PostCard post={post} />
+            ))}
+        </div>
+    ) : (
+        <div class="py-20 text-center">
+            <p class="text-slate-400 italic">Chưa có bài viết nào trong mục này.</p>
+        </div>
+    )}
+</Layout>

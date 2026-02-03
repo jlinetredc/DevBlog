@@ -1,0 +1,36 @@
+---
+import { getCategoryLabel } from '../lib/categories';
+const { post } = Astro.props;
+const { title, description, pubDate, category } = post.data;
+
+const displayLabel = getCategoryLabel(category);
+---
+
+<article class="bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+    <div class="p-6 flex-grow">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-bold uppercase tracking-wider rounded-full">
+                {displayLabel}
+            </span>
+            <time class="text-slate-400 text-xs">
+                {pubDate.toLocaleDateString('vi-VN')}
+            </time>
+        </div>
+        
+        <a href={`/blog/${post.slug}`} class="group">
+            <h2 class="text-xl font-bold text-slate-900 group-hover:text-orange-600 transition-colors mb-3 line-clamp-2">
+                {title}
+            </h2>
+        </a>
+        
+        <p class="text-slate-600 text-sm line-clamp-3 mb-4">
+            {description}
+        </p>
+    </div>
+    
+    <div class="px-6 py-4 border-t border-slate-50">
+        <a href={`/blog/${post.slug}`} class="text-sm font-semibold text-slate-900 flex items-center gap-1 hover:gap-2 transition-all">
+            Đọc bài viết <span class="text-orange-600">→</span>
+        </a>
+    </div>
+</article>

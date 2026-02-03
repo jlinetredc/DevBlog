@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Thiết lập các tùy chỉnh của bạn tại đây thay vì trong file .mjs */
+@theme {
+    --color-brand: #ea580c; /* Màu cam thương hiệu */
+
+    /* Bạn có thể thêm font chữ, khoảng cách... ở đây */
+}
+
+/* Các quy tắc CSS bổ sung */
+body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+}
