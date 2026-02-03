@@ -6,7 +6,9 @@ import typography from '@tailwindcss/typography';
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()]
-  }
+    site: 'https://jlinetredc.github.io',
+    base: '/DevBlog',
+    vite: {
+        plugins: [tailwindcss()],
+    },
 });
