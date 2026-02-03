@@ -1,4 +1,5 @@
 ---
+import { getAssetPath } from '../lib/utils';
 const navItems = [
     { name: 'Trang chủ', href: '/' },
     { name: 'Bài viết', href: '/blog' },
@@ -8,7 +9,7 @@ const navItems = [
 
 <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
     <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2 group">
+        <a href={getAssetPath('/')} class="flex items-center gap-2 group">
             <div class="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center group-hover:rotate-6 transition-transform">
                 <span class="text-white font-bold text-xl">D</span>
             </div>

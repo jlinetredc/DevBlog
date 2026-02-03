@@ -1,5 +1,5 @@
 ---
-// src/pages/category/[id].astro
+import { getAssetPath } from '../../lib/utils';
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
@@ -30,7 +30,7 @@ const displayLabel = getCategoryLabel(id);
 
 <Layout title={`Chủ đề: ${displayLabel}`}>
     <header class="py-12 border-b border-slate-100 mb-12">
-        <a href="./" class="text-sm text-slate-400 hover:text-orange-600 transition-colors mb-4 inline-block">
+        <a href={getAssetPath('/')} class="text-sm text-slate-400 hover:text-orange-600 transition-colors mb-4 inline-block">
             ← Tất cả bài viết
         </a>
         <div class="flex items-center gap-4">

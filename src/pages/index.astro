@@ -1,4 +1,5 @@
 ---
+import { getAssetPath } from '../lib/utils';
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import PostCard from '../components/PostCard.astro';
@@ -22,10 +23,10 @@ const categoryList = Object.values(CATEGORIES);
     </section>
 
     <div class="flex flex-wrap gap-3 mb-12">
-        <a href="./" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium">Tất cả</a>
+        <a href={getAssetPath('/')}  class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium">Tất cả</a>
         {categoryList.map(cat => (
             <a 
-                href={`./category/${cat.id}`} 
+                href={getAssetPath(`/category/${cat.id}`)} 
                 class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold transition-all hover:border-orange-500 hover:text-orange-600 hover:shadow-md hover:-translate-y-0.5"
             >
                 {cat.label}

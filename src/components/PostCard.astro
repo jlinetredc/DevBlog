@@ -1,5 +1,6 @@
 ---
 import { getCategoryLabel } from '../lib/categories';
+import { getAssetPath } from '../lib/utils';
 const { post } = Astro.props;
 const { title, description, pubDate, category } = post.data;
 
@@ -17,7 +18,7 @@ const displayLabel = getCategoryLabel(category);
             </time>
         </div>
         
-        <a href={`/blog/${post.slug}`} class="group">
+        <a href={getAssetPath(`/blog/${post.slug}`)} class="group">
             <h2 class="text-xl font-bold text-slate-900 group-hover:text-orange-600 transition-colors mb-3 line-clamp-2">
                 {title}
             </h2>
@@ -29,7 +30,7 @@ const displayLabel = getCategoryLabel(category);
     </div>
     
     <div class="px-6 py-4 border-t border-slate-50">
-        <a href={`/blog/${post.slug}`} class="text-sm font-semibold text-slate-900 flex items-center gap-1 hover:gap-2 transition-all">
+        <a href={getAssetPath(`/blog/${post.slug}`)} class="text-sm font-semibold text-slate-900 flex items-center gap-1 hover:gap-2 transition-all">
             Đọc bài viết <span class="text-orange-600">→</span>
         </a>
     </div>
