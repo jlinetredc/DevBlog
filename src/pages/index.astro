@@ -1,42 +1,23 @@
 ---
-import { getAssetPath } from '../lib/utils';
+// src/pages/index.astro
 import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import PostCard from '../components/PostCard.astro';
-import { CATEGORIES } from '../lib/categories';
+import Page from './[page].astro';
+import { SITE_CONFIG } from '../lib/constants';
 
+// Chúng ta giả lập dữ liệu của trang 1 để render ngay tại index
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const pageSize = SITE_CONFIG.pageSize;
 
-const categories = [...new Set(allPosts.map(post => post.data.category))];
-const categoryList = Object.values(CATEGORIES);
+const page = {
+    data: sortedPosts.slice(0, pageSize),
+    currentPage: 1,
+    lastPage: Math.ceil(sortedPosts.length / pageSize),
+    url: {
+        prev: undefined,
+        next: sortedPosts.length > pageSize ? '/2' : undefined
+    }
+};
 ---
 
-<Layout title="Trang chủ | My DevBlog">
-    <section class="py-12 border-b border-slate-100 mb-12">
-        <h1 class="text-5xl font-black text-slate-900 mb-4 tracking-tight">
-            Chào mừng đến với <span class="text-orange-600">DevBlog</span>
-        </h1>
-        <p class="text-lg text-slate-600 max-w-2xl">
-            Nơi chia sẻ kiến thức lập trình thực chiến. Hiện tại đang có {allPosts.length} bài viết chia sẻ tới cộng đồng.
-        </p>
-    </section>
-
-    <div class="flex flex-wrap gap-3 mb-12">
-        <a href={getAssetPath('/')}  class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium">Tất cả</a>
-        {categoryList.map(cat => (
-            <a 
-                href={getAssetPath(`/category/${cat.id}`)} 
-                class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold transition-all hover:border-orange-500 hover:text-orange-600 hover:shadow-md hover:-translate-y-0.5"
-            >
-                {cat.label}
-            </a>
-        ))}
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {sortedPosts.map(post => (
-            <PostCard post={post} />
-        ))}
-    </div>
-</Layout>
+<Page page={page} />

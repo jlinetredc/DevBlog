@@ -8,7 +8,6 @@ import typography from '@tailwindcss/typography';
 export default defineConfig({
     site: 'https://jlinetredc.github.io',
     base: '/DevBlog',
-    trailingSlash: 'always',
     build: {
         format: 'directory',
     },

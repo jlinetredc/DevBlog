@@ -1,0 +1,82 @@
+---
+// src/pages/[page].astro
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getAssetPath } from '../lib/utils';
+import { CATEGORIES } from '../lib/categories';
+import { SITE_CONFIG } from '../lib/constants';
+
+export async function getStaticPaths({ paginate }) {
+    const allPosts = await getCollection('blog');
+    const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    // Phân trang: 12 bài mỗi trang
+    return paginate(sortedPosts, { pageSize: SITE_CONFIG.pageSize });
+}
+
+const allPosts = await getCollection('blog');
+const categoryList = Object.values(CATEGORIES);
+
+const { page } = Astro.props;
+const { currentPage, lastPage } = page;
+
+// Logic tạo danh sách số trang (1, 2, 3...)
+const pageNumbers = Array.from({ length: lastPage }, (_, i) => i + 1);
+---
+
+<Layout title={currentPage === 1 ? "Trang chủ" : `Trang ${currentPage}`}>
+    <section class="py-12 border-b border-slate-100 mb-12">
+        <h1 class="text-5xl font-black text-slate-900 mb-4 tracking-tight">
+            Chào mừng đến với <span class="text-orange-600">DevBlog</span>
+        </h1>
+        <p class="text-lg text-slate-600 max-w-2xl">
+            Nơi chia sẻ kiến thức lập trình thực chiến. Hiện tại đang có {allPosts.length} bài viết chia sẻ tới cộng đồng.
+        </p>
+    </section>
+
+    <div class="flex flex-wrap gap-3 mb-12">
+        <a href={getAssetPath('/')}  class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium">Tất cả</a>
+        {categoryList.map(cat => (
+            <a 
+                href={getAssetPath(`/category/${cat.id}`)} 
+                class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold transition-all hover:border-orange-500 hover:text-orange-600 hover:shadow-md hover:-translate-y-0.5"
+            >
+                {cat.label}
+            </a>
+        ))}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {page.data.map(post => <PostCard post={post} />)}
+    </div>
+
+    {lastPage > 1 && (
+        <nav class="mt-20 flex flex-wrap justify-center items-center gap-2">
+            {page.url.prev && (
+                <a href={getAssetPath(page.url.prev)} class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+            )}
+
+            {pageNumbers.map(num => (
+                <a 
+                    href={getAssetPath(num === 1 ? '/' : `/${num}`)}
+                    class={`w-10 h-10 flex items-center justify-center rounded-lg font-bold text-sm transition-all ${
+                        currentPage === num 
+                        ? "bg-orange-600 text-white shadow-lg shadow-orange-200" 
+                        : "bg-white border border-slate-200 text-slate-600 hover:border-orange-500 hover:text-orange-600"
+                    }`}
+                >
+                    {num}
+                </a>
+            ))}
+
+            {page.url.next && (
+                <a href={getAssetPath(page.url.next)} class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            )}
+        </nav>
+    )}
+</Layout>

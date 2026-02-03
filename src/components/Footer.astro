@@ -1,14 +1,14 @@
 ---
-// src/components/Footer.astro
+import { getAssetPath } from '../lib/utils';
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="bg-white border-t border-slate-100 py-12 mt-20">
     <div class="max-w-5xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+
             <div class="flex flex-col items-center md:items-start gap-2">
-                <a href="/" class="flex items-center gap-2 group">
+                <a href={getAssetPath('/')} class="flex items-center gap-2 group">
                     <div class="w-8 h-8 bg-slate-900 rounded flex items-center justify-center transition-transform group-hover:rotate-6">
                         <span class="text-white font-bold text-sm">D</span>
                     </div>
@@ -16,23 +16,18 @@ const currentYear = new Date().getFullYear();
                         DEV<span class="text-orange-600">BLOG</span>
                     </span>
                 </a>
-                <p class="text-slate-400 text-xs font-medium">
-                    © {currentYear} — Thiết kế bởi bạn. Tất cả quyền được bảo lưu.
-                </p>
             </div>
 
             <div class="flex items-center gap-8">
-                <a href="#" class="text-slate-400 hover:text-slate-900 transition-colors text-sm font-semibold uppercase tracking-widest">
+                <a href="https://github.com/jlinetredc/DevBlog" target="_blank" class="text-slate-400 hover:text-slate-900 transition-colors text-sm font-semibold uppercase tracking-widest">
                     Github
-                </a>
-                <a href="#" class="text-slate-400 hover:text-orange-600 transition-colors text-sm font-semibold uppercase tracking-widest">
-                    Twitter
-                </a>
-                <a href="#" class="text-slate-400 hover:text-blue-600 transition-colors text-sm font-semibold uppercase tracking-widest">
-                    LinkedIn
                 </a>
             </div>
 
         </div>
+
+        <p class="text-slate-400 text-xs font-medium text-center">
+            © {currentYear} — Thiết kế bởi bạn. Tất cả quyền được bảo lưu.
+        </p>
     </div>
 </footer>

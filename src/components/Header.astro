@@ -52,14 +52,14 @@ const navItems = [
     // 2. Xử lý tìm kiếm khi gõ
     searchInput?.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
-        
+
         if (query.length < 2) {
             searchResults.classList.add('hidden');
             return;
         }
 
-        const filtered = searchData.filter(post => 
-            post.title.toLowerCase().includes(query) || 
+        const filtered = searchData.filter(post =>
+            post.title.toLowerCase().includes(query) ||
             post.description.toLowerCase().includes(query)
         ).slice(0, 5); // Chỉ lấy 5 kết quả đầu tiên cho gọn
 

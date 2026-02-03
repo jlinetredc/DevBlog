@@ -6,8 +6,17 @@
  * @returns {string} - Đường dẫn đã được nối với BASE_URL
  */
 export function getAssetPath(path) {
-    const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // Loại bỏ dấu / ở cuối base nếu có
-    const cleanPath = path.startsWith('/') ? path : `/${path}`; // Đảm bảo path bắt đầu bằng dấu /
+    if (!path) return '';
+
+    const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // ví dụ: /ten-repo
+
+    // Nếu path đã bắt đầu bằng base thì không thêm nữa (tránh /ten-repo/ten-repo/2)
+    if (path.startsWith(base) && base !== '') {
+        return path;
+    }
+
+    // Đảm bảo path có dấu gạch chéo ở đầu
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
 
     return `${base}${cleanPath}`;
 }
