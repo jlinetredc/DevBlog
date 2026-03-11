@@ -5,12 +5,12 @@ const categoryIds = Object.values(CATEGORIES).map((c) => c.id);
 
 const blog = defineCollection({
     type: 'content',
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string(),
         pubDate: z.date(),
         category: z.enum(categoryIds),
-        image: z.string().optional(),
+        image: image().optional(),
     }),
 });
 
